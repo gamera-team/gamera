@@ -1,0 +1,39 @@
+# -*- encoding: utf-8 -*-
+
+$LOAD_PATH.unshift File.expand_path('lib', __FILE__)
+
+Gem::Specification.new do |s|
+  s.name        = 'gamera'
+  s.version     = '0.1.0'
+  s.platform    = Gem::Platform::RUBY
+  s.authors     = ['Eric Dobbs', 'Glen Aultman-Bettridge', 'Jillian Rosile']
+  s.email       = 'edobbs@comverge.com'
+  s.homepage    = 'http://github.comverge.com/software/gamera'
+  s.license     = 'MIT'
+  s.summary     = 'PageObject pattern implementation based on Capybara'
+  s.description = "Provides a framework which let's you wrap any web page with a Ruby API."
+
+  s.files            = `git ls-files -- lib/*`.split("\n")
+
+  s.test_files       = `git ls-files -- {spec}/*`.split("\n")
+  s.require_path     = 'lib'
+
+  s.add_dependency 'rspec', '~> 3.1', '>= 3.1.0'
+  s.add_dependency 'sinatra', '~> 1.4', '>= 1.4.5'
+  s.add_dependency 'selenium-webdriver', '~> 2.45', '>= 2.45.0'
+  s.add_dependency 'sqlite3', '~> 1.3', '>= 1.3.10'
+  s.add_dependency 'byebug', '~> 3.5', '>= 3.5.1'
+
+  s.add_dependency 'capybara', '~> 2.4', '>= 2.4.4'
+  s.add_dependency 'capybara-screenshot', '~> 1.0', '>= 1.0.7'
+
+  s.add_dependency 'sequel', '~> 4.20', '>= 4.20.0'
+  # Using forks from the original project, because the PRs made by Jason Rush
+  # to each of the gems are still pending. Once those go live, uncomment these
+  # lines and remove the corresponding entries in Gemfile
+  # s.add_dependency 'symbolmatrix', '~> 1.2', '>= 1.2.1'
+  # s.add_dependency 'sequel-fixture', '~> 2.0', '>= 2.0.3'
+  s.add_development_dependency 'yard'
+  s.add_development_dependency 'yardstick'
+
+end

@@ -1,0 +1,5 @@
+test:
+  adapter: "sqlite"
+  database: "file:two-level-database-yml?mode=memory&cache=shared"
+  username: "root"
+  password:

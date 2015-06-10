@@ -1,0 +1,10 @@
+data:
+  - id: 1
+    member_id: 1
+    role_id: 2
+  - id: 2
+    member_id: 2
+    role_id: 3
+  - id: 3
+    member_id: 2
+    role_id: 1

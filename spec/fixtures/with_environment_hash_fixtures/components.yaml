@@ -1,0 +1,7 @@
+data:
+  - id: 1
+    name: "First Component"
+    widget_id: 1
+  - id: 2
+    name: "Second Component"
+    widget_id: 1

@@ -1,0 +1,5 @@
+anything-but-test:
+  adapter: "sqlite"
+  database: "file:invalid-database-yml?mode=memory&cache=shared"
+  username: "root"
+  password:

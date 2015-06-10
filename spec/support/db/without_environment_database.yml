@@ -1,0 +1,4 @@
+adapter: "sqlite"
+database: "file:one-level-database-yml?mode=memory&cache=shared"
+username: "root"
+password:

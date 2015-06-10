@@ -1,0 +1,6 @@
+data:
+  - id: 1
+    street_address: "123 Main St"
+    city: Denver
+    state: CO
+    zip: 80202

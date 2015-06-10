@@ -1,0 +1,7 @@
+data:
+  - id: 1
+    person_id: 1
+    house_id: 1
+  - id: 2
+    person_id: 2
+    house_id: 1
