@@ -1,0 +1,401 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Gamera by gamera-team</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Gamera</h1>
+        <p>A framework for implementing the page object pattern and automating web page interactions</p>
+
+        <p class="view"><a href="https://github.com/gamera-team/gamera">View the Project on GitHub <small>gamera-team/gamera</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/gamera-team/gamera/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/gamera-team/gamera/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/gamera-team/gamera">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="gamera" class="anchor" href="#gamera" aria-hidden="true"><span class="octicon octicon-link"></span></a>gamera</h1>
+
+<p><a href="http://travis-ci.org/gamera-team/gamera"><img src="https://secure.travis-ci.org/gamera-team/gamera.png" alt="Build Status"></a>
+<a href="https://gemnasium.com/gamera-team/gamera"><img src="https://gemnasium.com/gamera-team/gamera.png" alt="Dependency Status"></a></p>
+
+<p>gamera lets you control and interact with web pages directly from your Ruby
+code. Essentially, you can wrap any web page with a Ruby API.</p>
+
+<h2>
+<a id="table-of-contents" class="anchor" href="#table-of-contents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Table of Contents</h2>
+
+<ul>
+<li><a href="#features">Features</a></li>
+<li><a href="#what-is-the-page-object-pattern">What is the Page Object Pattern?</a></li>
+<li><a href="#setup">Setup</a></li>
+<li><a href="#using-gamera">Basic usage</a></li>
+<li><a href="#using-gamera-with-pry">Using gamera with pry</a></li>
+<li><a href="#contributing">Contributing</a></li>
+</ul>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>a lightweight way of implementing the PageObject pattern on top of Capybara</li>
+<li>a framework for abstracting web pages into Ruby classes</li>
+<li>rainbows, puppies and kittens for every user (not included)</li>
+</ul>
+
+<h2>
+<a id="what-is-the-page-object-pattern" class="anchor" href="#what-is-the-page-object-pattern" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is the Page Object Pattern?</h2>
+
+<p>The brilliant Martin Fowler describes the
+<a href="http://martinfowler.com/bliki/PageObject.html">PageObject</a> pattern in detail.
+Here's is a list of the essential features of the pattern.</p>
+
+<ul>
+<li>A PageObject creates an application-level API for a web page or section of a
+  web page. For example, <code>create_user_account</code> instead of <code>fill in this
+  field, click on this button</code>
+</li>
+<li>A PageObject allows a software client to do or see anything that a human can.</li>
+<li>A PageObject provides an easily programmable interface that hides details of
+  the specific HTML controls and elements.</li>
+<li>Changes to the underlying web page shouldn't alter the PageObject
+  interface (as long as the web page still supports the same business
+  processes)</li>
+<li>The result of navigating from a PageObject (e.g. clicking on a link or
+  submitting a form), should be another PageObject.</li>
+</ul>
+
+<h2>
+<a id="setup" class="anchor" href="#setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setup</h2>
+
+<p>gamera requires Ruby 1.9.3 or later. To install, add this line to your
+<code>Gemfile</code> and run <code>bundle install</code>:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="pl-k">gem</span> <span class="pl-s"><span class="pl-pds">'</span>gamera<span class="pl-pds">'</span></span></pre></div>
+
+<p>If you're not using Bundler, you can install with</p>
+
+<div class="highlight highlight-bash"><pre>gem install <span class="pl-s"><span class="pl-pds">'</span>gamera<span class="pl-pds">'</span></span></pre></div>
+
+<h2>
+<a id="using-gamera" class="anchor" href="#using-gamera" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using gamera</h2>
+
+<p>gamera has two primary classes:</p>
+
+<ol>
+<li>
+<em>Page</em> is a base class which you can subclass to create specific page
+objects or you can create subclasses that capture additional common behavior
+(for example, flash messages in a Rails app, common header or footer menus
+and so forth) and extend those to create specific page objects.</li>
+<li>
+<em>Builder</em> is a base class for capturing business process methods that
+require multiple page objects (for example, adding a new user to a new
+group, which might require creating a new user, creating a group and adding
+the user with each step occurring on different pages in the web app). In
+practice, <code>Builder</code> subclasses are also used to create or alter data in the
+system.</li>
+</ol>
+
+<h3>
+<a id="example-use-gameras-page-class-to-create-a-user-registration-page-object" class="anchor" href="#example-use-gameras-page-class-to-create-a-user-registration-page-object" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example: Use gamera's <em>Page</em> class to create a user registration page object</h3>
+
+<p>Given a registration page that looks like</p>
+
+<div class="highlight highlight-html"><pre>  &lt;<span class="pl-ent">html</span>&gt;
+    &lt;<span class="pl-ent">body</span>&gt;
+      &lt;<span class="pl-ent">h2</span>&gt;Register!&lt;/<span class="pl-ent">h2</span>&gt;
+      &lt;<span class="pl-ent">form</span> <span class="pl-e">action</span>=<span class="pl-s"><span class="pl-pds">"</span>#<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s"><span class="pl-pds">'</span>first_name<span class="pl-pds">'</span></span>&gt;First Name&lt;/<span class="pl-ent">label</span>&gt; &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">'</span>first_name<span class="pl-pds">'</span></span>&gt;
+       &lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s"><span class="pl-pds">'</span>last_name<span class="pl-pds">'</span></span>&gt;Last Name&lt;/<span class="pl-ent">label</span>&gt; &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">'</span>last_name<span class="pl-pds">'</span></span>&gt;
+       &lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span>&gt;Email&lt;/<span class="pl-ent">label</span>&gt; &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span>&gt;
+       &lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span>&gt;Email&lt;/<span class="pl-ent">label</span>&gt; &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span>&gt;
+       &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">'</span>button<span class="pl-pds">'</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">'</span>save_button<span class="pl-pds">'</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">'</span>Save<span class="pl-pds">'</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">'</span>Save<span class="pl-pds">'</span></span>&gt;
+      &lt;/<span class="pl-ent">form</span>&gt;
+      &lt;/<span class="pl-ent">detail</span>&gt;
+    &lt;/<span class="pl-ent">body</span>&gt;
+  &lt;/<span class="pl-ent">html</span>&gt;</pre></div>
+
+<p>create a corresponding page object class</p>
+
+<div class="highlight highlight-ruby"><pre>  <span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>gamera<span class="pl-pds">'</span></span>
+
+  <span class="pl-k">class</span> <span class="pl-en">RegistrationPage<span class="pl-e"> &lt; Gamera::Page</span></span>
+
+    <span class="pl-k">def</span> <span class="pl-en">initialize</span>
+      <span class="pl-smi">@url</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>http://example.com/registration<span class="pl-pds">'</span></span>
+      <span class="pl-smi">@url_matcher</span> <span class="pl-k">=</span> <span class="pl-sr"><span class="pl-pds">%r{</span>/registration<span class="pl-pds">}</span></span>
+    <span class="pl-k">end</span>
+
+    <span class="pl-k">def</span> <span class="pl-en">register_user</span>(<span class="pl-smi">first_name</span>:, <span class="pl-smi">last_name</span>:, <span class="pl-smi">email_address</span>:, <span class="pl-smi">password</span>:)
+      first_name_field.set(first_name)
+      last_name_field.set(last_name)
+      email_field.set(email)
+      password_field.set(password)
+      save
+    <span class="pl-k">end</span>
+
+    <span class="pl-k">private</span>
+
+    <span class="pl-k">def</span> <span class="pl-en">first_name_field</span>
+      find_field(<span class="pl-s"><span class="pl-pds">'</span>First Name<span class="pl-pds">'</span></span>) <span class="pl-c"># Capybara finder</span>
+    <span class="pl-k">end</span>
+
+    <span class="pl-k">def</span> <span class="pl-en">last_name_field</span>
+      find_field(<span class="pl-s"><span class="pl-pds">'</span>Last Name<span class="pl-pds">'</span></span>) <span class="pl-c"># Capybara finder</span>
+    <span class="pl-k">end</span>
+
+    <span class="pl-k">def</span> <span class="pl-en">email_address_field</span>
+      find_field(<span class="pl-s"><span class="pl-pds">'</span>Email<span class="pl-pds">'</span></span>) <span class="pl-c"># Capybara finder</span>
+    <span class="pl-k">end</span>
+
+    <span class="pl-k">def</span> <span class="pl-en">password_field</span>
+      find_field(<span class="pl-s"><span class="pl-pds">'</span>Password<span class="pl-pds">'</span></span>) <span class="pl-c"># Capybara finder</span>
+    <span class="pl-k">end</span>
+
+    <span class="pl-k">def</span> <span class="pl-en">save</span>
+      find_button(<span class="pl-s"><span class="pl-pds">'</span>Save<span class="pl-pds">'</span></span>).click <span class="pl-c"># Capybara finder</span>
+    <span class="pl-k">end</span>
+  <span class="pl-k">end</span>
+</pre></div>
+
+<p>You could also simplify this by using
+<a href="./doc/Gamera/PageSections/Form.html">Gamera::PageSection::Form</a></p>
+
+<div class="highlight highlight-ruby"><pre>  <span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>gamera<span class="pl-pds">'</span></span>
+
+  <span class="pl-k">class</span> <span class="pl-en">RegistrationPage<span class="pl-e"> &lt; Gamera::Page</span></span>
+
+    <span class="pl-k">def</span> <span class="pl-en">initialize</span>
+      <span class="pl-smi">@url</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>http://example.com/registration/new<span class="pl-pds">'</span></span>
+      <span class="pl-smi">@url_matcher</span> <span class="pl-k">=</span> <span class="pl-sr"><span class="pl-pds">%r{</span>/registration/new<span class="pl-pds">}</span></span>
+
+      form_fields <span class="pl-k">=</span> {
+        <span class="pl-c1">first_name:</span> <span class="pl-s"><span class="pl-pds">'</span>First Name<span class="pl-pds">'</span></span>,
+        <span class="pl-c1">last_name:</span> <span class="pl-s"><span class="pl-pds">'</span>Last Name<span class="pl-pds">'</span></span>,
+        <span class="pl-c1">email:</span> <span class="pl-s"><span class="pl-pds">'</span>Email<span class="pl-pds">'</span></span>,
+        <span class="pl-c1">password:</span> <span class="pl-s"><span class="pl-pds">'</span>Password<span class="pl-pds">'</span></span>
+      }
+      <span class="pl-smi">@registration_form</span> <span class="pl-k">=</span> <span class="pl-c1">Gamera</span>::<span class="pl-c1">PageSections</span>::<span class="pl-c1">Form</span>.<span class="pl-k">new</span>(form_fields)
+      def_delegators <span class="pl-c1">:registration_form</span>, <span class="pl-k">*</span>registration_form.field_method_names
+    <span class="pl-k">end</span>
+
+    <span class="pl-k">def</span> <span class="pl-en">register_user</span>(<span class="pl-smi">first_name</span>:, <span class="pl-smi">last_name</span>:, <span class="pl-smi">email_address</span>:, <span class="pl-smi">password</span>:)
+      first_name_field.set(first_name)
+      last_name_field.set(last_name)
+      email_field.set(email)
+      password_field.set(password)
+      save
+    <span class="pl-k">end</span>
+
+    <span class="pl-k">private</span>
+
+    <span class="pl-k">def</span> <span class="pl-en">save</span>
+      find_button(<span class="pl-s"><span class="pl-pds">'</span>Save<span class="pl-pds">'</span></span>).click <span class="pl-c"># Capybara finder</span>
+    <span class="pl-k">end</span>
+  <span class="pl-k">end</span>
+</pre></div>
+
+<p>In either case, you can then call</p>
+
+<div class="highlight highlight-ruby"><pre>  rp <span class="pl-k">=</span> <span class="pl-c1">RegistrationPage</span>.<span class="pl-k">new</span>
+  rp.visit
+  rp.register_user(<span class="pl-c1">first_name:</span> <span class="pl-s"><span class="pl-pds">'</span>Laurence<span class="pl-pds">'</span></span>,
+                   <span class="pl-c1">last_name:</span> <span class="pl-s"><span class="pl-pds">'</span>Peltier<span class="pl-pds">'</span></span>,
+                   <span class="pl-c1">email_address:</span> <span class="pl-s"><span class="pl-pds">'</span>lpeltier@example.com<span class="pl-pds">'</span></span>,
+                   <span class="pl-c1">password:</span> <span class="pl-s"><span class="pl-pds">'</span>so_secret<span class="pl-pds">'</span></span>)</pre></div>
+
+<p>in your code to register a new user through your web app's registration page.</p>
+
+<h3>
+<a id="example-extend-gameras-page-class-to-create-a-railspage-class" class="anchor" href="#example-extend-gameras-page-class-to-create-a-railspage-class" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example: Extend gamera's <em>Page</em> class to create a <em>RailsPage</em> class</h3>
+
+<p>For a given web app, you may find that you want to capture other common elements
+in your page objects, such as, for example, flash messages in a Rails app or a
+navigational node that's common to the entire site. One approach to this is to
+subclass <code>Page</code>, add the common elements and then use the new subclass as the
+parent for the actual page object classes.</p>
+
+<p>For a Rails app, a new <code>RailsPage</code> class might look something like</p>
+
+<div class="highlight highlight-ruby"><pre>   <span class="pl-k">class</span> <span class="pl-en">RailsPage<span class="pl-e"> &lt; Gamera::Page</span></span>
+
+     <span class="pl-k">def</span> <span class="pl-en">flash_error</span>
+       flash_error_div.text
+     <span class="pl-k">end</span>
+
+     <span class="pl-k">def</span> <span class="pl-en">flash_message</span>
+       flash_notice_div.text
+     <span class="pl-k">end</span>
+
+     <span class="pl-k">def</span> <span class="pl-en">has_flash_message?</span>(<span class="pl-smi">message</span>)
+       has_css?(flash_notice_css, <span class="pl-c1">text:</span> message)
+     <span class="pl-k">end</span>
+
+     <span class="pl-k">def</span> <span class="pl-en">has_flash_error?</span>(<span class="pl-smi">error</span>)
+       has_css?(flash_error_css, <span class="pl-c1">text:</span> error)
+     <span class="pl-k">end</span>
+
+     <span class="pl-k">def</span> <span class="pl-en">has_no_flash_error?</span>
+       has_no_css?(flash_error_css)
+     <span class="pl-k">end</span>
+
+     <span class="pl-k">def</span> <span class="pl-en">has_no_flash_message?</span>
+       has_no_css?(flash_notice_css)
+     <span class="pl-k">end</span>
+
+     <span class="pl-k">def</span> <span class="pl-en">has_submission_problems?</span>
+       has_flash_error?(<span class="pl-s"><span class="pl-pds">'</span>There were problems with your submission<span class="pl-pds">'</span></span>)
+     <span class="pl-k">end</span>
+
+     <span class="pl-k">def</span> <span class="pl-en">fail_if_submission_problems</span>
+       fail(<span class="pl-c1">SubmissionProblemsError</span>, flash_error.text) <span class="pl-k">if</span> has_submission_problems?
+     <span class="pl-k">end</span>
+
+     <span class="pl-k">private</span>
+
+     <span class="pl-k">def</span> <span class="pl-en">flash_error_css</span>
+       <span class="pl-s"><span class="pl-pds">'</span>div.flash.error<span class="pl-pds">'</span></span>
+     <span class="pl-k">end</span>
+
+     <span class="pl-k">def</span> <span class="pl-en">flash_notice_css</span>
+       <span class="pl-s"><span class="pl-pds">'</span>div.flash.notice<span class="pl-pds">'</span></span>
+     <span class="pl-k">end</span>
+
+     <span class="pl-k">def</span> <span class="pl-en">flash_error_div</span>
+       find(flash_error_css)
+     <span class="pl-k">end</span>
+
+     <span class="pl-k">def</span> <span class="pl-en">flash_notice_div</span>
+       find(flash_notice_css)
+     <span class="pl-k">end</span>
+   <span class="pl-k">end</span></pre></div>
+
+<p>This could then be used as the parent class for the <em>RegistrationPage</em> in the
+previous example, adding the ability to check the flash message when the user is
+registered.</p>
+
+<h3>
+<a id="example-creating-a-builder-subclass-to-capture-a-multipage-business" class="anchor" href="#example-creating-a-builder-subclass-to-capture-a-multipage-business" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example: Creating a <em>Builder</em> subclass to capture a multipage business</h3>
+
+<p>process</p>
+
+<p>For this example, let's assume we're automating a task management site that
+lets a manager assign task to members of her team and that we've already created
+page objects for some of the pages: <code>NewTaskPage</code>,
+<code>UserLoginPage</code>, <code>AssignTaskPage</code>. Then we might create a <code>AssignedTaskBuilder</code>
+like so,</p>
+
+<div class="highlight highlight-ruby"><pre><span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>gamera<span class="pl-pds">'</span></span>
+<span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>page_objects<span class="pl-pds">'</span></span>
+
+<span class="pl-k">class</span> <span class="pl-en">AssignedTaskBuilder<span class="pl-e"> &lt; Gamera::Builder.with_options</span></span>(
+<span class="pl-c1">:admin_email</span>, <span class="pl-c1">:task_name</span>, <span class="pl-c1">:task_due_date</span>, <span class="pl-c1">:assignee_email</span>
+)
+  <span class="pl-k">def</span> <span class="pl-en">build</span>
+    user_login_page <span class="pl-k">=</span> <span class="pl-c1">UserLoginPage</span>.<span class="pl-k">new</span>
+    new_task_page <span class="pl-k">=</span> <span class="pl-c1">NewTaskPage</span>.<span class="pl-k">new</span>
+    assign_task_page <span class="pl-k">=</span> <span class="pl-c1">AssignTaskPage</span>.<span class="pl-k">new</span>
+
+    user_login_page.visit
+    user_login_page.login_as(admin_email)
+    new_task_page.visit
+    new_task_page.create_task(task_name, task_due_date)
+    assign_task_page.visit
+    assign_task_page.assign(<span class="pl-c1">task_name:</span> task_name, <span class="pl-c1">to:</span> assignee)
+  <span class="pl-k">end</span>
+
+  <span class="pl-c"># Give back a builder with default values set (say for easy test data setup)</span>
+  <span class="pl-k">def</span> <span class="pl-en">assigned_task_builder</span>
+    <span class="pl-c1">AssignedTaskBuilder</span>.<span class="pl-k">new</span>(
+      <span class="pl-c1">admin_email:</span> <span class="pl-s"><span class="pl-pds">'</span>ann_admin@example.com<span class="pl-pds">'</span></span>,
+      <span class="pl-c1">task_name:</span> <span class="pl-s"><span class="pl-pds">'</span>That thing you do<span class="pl-pds">'</span></span>
+      <span class="pl-c1">task_due_date:</span> <span class="pl-c1">Time</span>.now <span class="pl-k">+</span> <span class="pl-c1">24</span>.hours
+      <span class="pl-c1">assignee:</span> <span class="pl-s"><span class="pl-pds">'</span>tessa_lation@example.com<span class="pl-pds">'</span></span>)
+  <span class="pl-k">end</span>
+<span class="pl-k">end</span></pre></div>
+
+<p>Notice that an instance of the class won't actually do anything until the
+<code>build</code> method is called. This lets us to defer the build until the data or
+process neeeds to happen. The builder as data factory model allows us to reuse
+the builder, change the defaults or create a new builder instance with
+different defaults.</p>
+
+<div class="highlight highlight-ruby"><pre><span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>assigned_task_builder`</span>
+<span class="pl-s">include AssignedTaskBuilder</span>
+<span class="pl-s"></span>
+<span class="pl-s">assigned_task_builder # =&gt; builder with the default options</span>
+<span class="pl-s">assigned_task_builder.build # =&gt; actually assign the default task</span>
+<span class="pl-s">another_task_builder = assigned_task_builder.refine_with(task_name: <span class="pl-pds">'</span></span><span class="pl-c1">That</span> other
+thing you <span class="pl-k">do</span><span class="pl-s"><span class="pl-pds">'</span>) # =&gt; a new builder with a different task name</span>
+<span class="pl-s">another_task_builder.build # =&gt; assign the new task</span></pre></div>
+
+<h2>
+<a id="using-gamera-with-pry" class="anchor" href="#using-gamera-with-pry" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using gamera with Pry</h2>
+
+<p>We've created some toy web apps in Sinatra and some simple page objects on top
+of them to test gamera. You can play with some of the spec pages and apps in
+pry, using the following</p>
+
+<div class="highlight highlight-bash"><pre><span class="pl-c1">cd</span> <span class="pl-k">~</span>/workspace/talos/lib
+pry -r ./pry_setup.rb</pre></div>
+
+<p>This will add convenience methods that can be used in pry</p>
+
+<p>Start the single page SimpleForm web app from pry with <code>pry&gt; simple_form</code>. Use
+this:</p>
+
+<div class="highlight highlight-bash"><pre>pry<span class="pl-k">&gt;</span> simple_form_page.visit
+pry<span class="pl-k">&gt;</span> simple_form_page.fill_in_form(:text =<span class="pl-k">&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Entered Text<span class="pl-pds">'</span></span>, :selection =<span class="pl-k">&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>C<span class="pl-pds">'</span></span>)
+pry<span class="pl-k">&gt;</span> simple_form_page.submit</pre></div>
+
+<p>to fill in the form on the app and submit it.</p>
+
+<p>To see page object examples which handles page redirection or return page
+content, start the SimpleSite web app with</p>
+
+<div class="highlight highlight-bash"><pre>pry<span class="pl-k">&gt;</span> simple_site</pre></div>
+
+<h3>
+<a id="example-page-redirection-via-pry" class="anchor" href="#example-page-redirection-via-pry" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example: Page Redirection via Pry</h3>
+
+<div class="highlight highlight-bash"><pre>pry<span class="pl-k">&gt;</span> redirect_page.visit <span class="pl-c"># =&gt; should redirect to home page</span>
+pry<span class="pl-k">&gt;</span> redirect_page.displayed<span class="pl-k">?</span> <span class="pl-c"># =&gt; false</span>
+pry<span class="pl-k">&gt;</span> home_page.displayed<span class="pl-k">?</span> <span class="pl-c"># =&gt; true</span></pre></div>
+
+<h4>
+<a id="example-content-via-pry" class="anchor" href="#example-content-via-pry" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example: Content via Pry</h4>
+
+<div class="highlight highlight-bash"><pre>pry<span class="pl-k">&gt;</span> hit_counter_page.visit
+pry<span class="pl-k">&gt;</span> hit_counter_page.text =<span class="pl-k">~</span> /You have visited this page 1 <span class="pl-c1">times</span>/ <span class="pl-c"># =&gt; match!</span></pre></div>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>See this <a href="https://guides.github.com/activities/contributing-to-open-source/#contributing">great guide to contributing to Open Source projects from
+GitHub</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/gamera-team">gamera-team</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
