@@ -4,7 +4,7 @@ $LOAD_PATH.unshift File.expand_path('lib', __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = 'gamera'
-  s.version     = '0.1.0'
+  s.version     = '0.1.1'
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Eric Dobbs', 'Glen Aultman-Bettridge', 'Jillian Rosile']
   s.email       = ['eric@dobbse.net', 'glenab@koansolutions.net', 'jillian.rosile@gmail.com']
@@ -17,6 +17,9 @@ Gem::Specification.new do |s|
 
   s.test_files       = `git ls-files -- {spec}/*`.split("\n")
   s.require_path     = 'lib'
+
+  s.cert_chain  = ['certs/glena-b.pem']
+  s.signing_key = File.expand_path("~/.ssh/gem-private_key.pem") if $0 =~ /gem\z/
 
   s.add_dependency 'rspec', '~> 3.1', '>= 3.1.0'
   s.add_dependency 'sinatra', '~> 1.4', '>= 1.4.5'
