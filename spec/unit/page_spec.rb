@@ -51,6 +51,11 @@ describe 'Page' do
     expect(home_page).to be_displayed
   end
 
+  it 'ignores a redirect if told to' do
+    redirect_page = RedirectPage.new
+    expect { redirect_page.visit(false) }.not_to raise_error
+  end
+
   it 'refreshes until a condition is met and then stops refreshing' do
     hit_counter_page.visit
 
