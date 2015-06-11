@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://gamera-team.github.io/gamera/'
   s.license     = 'MIT'
   s.summary     = 'PageObject pattern implementation based on Capybara'
-  s.description = "Provides a framework which let's you wrap any web page with a Ruby API."
+  s.description = "Provides a framework which lets you wrap any web page with a Ruby API."
 
   s.files            = `git ls-files -- lib/*`.split("\n")
 
