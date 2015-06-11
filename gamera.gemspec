@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.version     = '0.1.0'
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Eric Dobbs', 'Glen Aultman-Bettridge', 'Jillian Rosile']
-  s.email       = 'edobbs@comverge.com'
-  s.homepage    = 'http://github.comverge.com/software/gamera'
+  s.email       = ['eric@dobbse.net', 'glenab@koansolutions.net', 'jillian.rosile@gmail.com']
+  s.homepage    = 'http://gamera-team.github.io/gamera/'
   s.license     = 'MIT'
   s.summary     = 'PageObject pattern implementation based on Capybara'
   s.description = "Provides a framework which let's you wrap any web page with a Ruby API."
