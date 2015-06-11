@@ -355,7 +355,7 @@ pry> redirect_page.displayed? # => false
 pry> home_page.displayed? # => true
 ```
 
-#### Example: Content via Pry
+### Example: Content via Pry
 
 ```bash
 pry> hit_counter_page.visit
