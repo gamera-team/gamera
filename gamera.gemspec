@@ -33,7 +33,6 @@ Gem::Specification.new do |s|
   # s.add_dependency 'sequel-fixture', '~> 2.0', '>= 2.0.3'
 
   s.add_development_dependency 'byebug', '~> 5.0', '>= 5.0.0'
-  s.add_development_dependency 'yard'
-  s.add_development_dependency 'yardstick'
-
+  s.add_development_dependency 'yard', '~> 0.8', '>= 0.8.7.2'
+  s.add_development_dependency 'yardstick', '~> 0.9', '>= 0.9.9'
 end
