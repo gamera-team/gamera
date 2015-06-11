@@ -40,10 +40,13 @@ Here's is a list of the essential features of the pattern.
   - The result of navigating from a PageObject (e.g. clicking on a link or
       submitting a form), should be another PageObject.
 
+## Requirements
+
+Gamera requires Ruby 2.1 or later.
+
 ## Setup
 
-
-gamera requires Ruby 2.1 or later. Also, gamera is cryptographically signed. To be sure the gem you install hasn’t been tampered with:
+Gamera is cryptographically signed. To be sure the gem you install hasn’t been tampered with:
 
 Add our public key (if you haven’t already) as a trusted certificate
 
@@ -55,7 +58,7 @@ To install with gem, run
 
 ```bash
 gem install gamera -P HighSecurity
-````
+```
 
 The HighSecurity trust profile will verify signed gems and dependencies. Gamera's dependencies should also be signed,
 
@@ -156,7 +159,7 @@ create a corresponding page object class
   ```
 
 You could also simplify this by using
-[Gamera::PageSection::Form](./doc/Gamera/PageSections/Form.html)
+[Gamera::PageSection::Form](http://www.rubydoc.info/github/gamera-team/gamera/master/Gamera/PageSections/Form)
 
   ```ruby
   require 'gamera'
@@ -276,8 +279,7 @@ This could then be used as the parent class for the _RegistrationPage_ in the
 previous example, adding the ability to check the flash message when the user is
 registered.
 
-### Example: Creating a _Builder_ subclass to capture a multipage business
-process
+### Example: Creating a _Builder_ subclass to capture a multipage business process
 
 For this example, let's assume we're automating a task management site that
 lets a manager assign task to members of her team and that we've already created
@@ -373,7 +375,7 @@ pry> redirect_page.displayed? # => false
 pry> home_page.displayed? # => true
 ```
 
-### Example: Content via Pry
+### Example: Page Content from a PageObject via Pry
 
 ```bash
 pry> hit_counter_page.visit
