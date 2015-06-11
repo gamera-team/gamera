@@ -141,11 +141,13 @@ module Gamera
 
     # Open the page url in the browser specified in your Capybara configuration
     #
-    # @raise [WrongPageVisited] if the site redirects to URL that doesn't match
-    #   the url_matcher regex
-    def visit
+    # @param fail_on_redirect [Boolean] Whether to fail if the site redirects to a page that does not match the url_matcher regex
+    # @raise [WrongPageVisited] if the site redirects to URL that doesn't match the url_matcher regex and fail_on_redirect is true
+    def visit(fail_on_redirect = true)
       super(url)
-      fail WrongPageVisited, "Expected URL '#{url}', got '#{page.current_url}'" unless displayed?
+      if fail_on_redirect
+        fail WrongPageVisited, "Expected URL '#{url}', got '#{page.current_url}'" unless displayed?
+      end
     end
 
     # Check to see if we eventually land on the right page
