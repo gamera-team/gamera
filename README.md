@@ -43,18 +43,36 @@ Here's is a list of the essential features of the pattern.
 ## Setup
 
 
-gamera requires Ruby 1.9.3 or later. To install, add this line to your
-`Gemfile` and run `bundle install`:
+gamera requires Ruby 2.1 or later. Also, gamera is cryptographically signed. To be sure the gem you install hasn’t been tampered with:
+
+Add our public key (if you haven’t already) as a trusted certificate
+
+```bash
+gem cert --add <(curl -Ls https://raw.github.com/gamera-team/gamera/master/certs/glena-b.pem)
+```
+
+To install with gem, run
+
+```bash
+gem install gamera -P HighSecurity
+````
+
+The HighSecurity trust profile will verify signed gems and dependencies. Gamera's dependencies should also be signed,
+
+To install with Bundler, add this line to your
+`Gemfile`:
 
 ```ruby
 gem 'gamera'
 ```
 
-If you're not using Bundler, you can install with
+and then run
 
 ```bash
-gem install 'gamera'
+bundle [install] --trust-policy [HighSecurity|MediumSecurity]
 ```
+
+You may need to use MediumSecurity if other gems in your Gemfile have unsigned dependencies.
 
 ## Using gamera
 
