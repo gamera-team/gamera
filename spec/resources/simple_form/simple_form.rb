@@ -34,8 +34,9 @@ class SimpleForm < Sinatra::Base
 
   post '/form' do
     "You entered '#{params[:text]}', " \
-    "you selected '#{params[:select]}' from the single select field " \
-    "and you selected '#{params[:multi_select].join(',')}' from the multiple select field"
+    "you selected '#{params[:select]}' from the single select field, " \
+    "you selected '#{params[:multi_select].join(',')}' from the multiple select field, " \
+    "and you #{params[:checkbox] ? 'checked' : 'did not check'} the checkbox."
   end
 
   run! if app_file == $PROGRAM_NAME

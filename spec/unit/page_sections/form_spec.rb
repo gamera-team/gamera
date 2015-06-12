@@ -41,6 +41,15 @@ describe 'SimpleFormPage' do
     form_page.fill_in_form(text: 'Entered Text', selection: 'C', multipleselection: %w(A C))
     form_page.submit
 
-    expect(form_page.text).to eq("You entered 'Entered Text', you selected 'C' from the single select field and you selected 'A,C' from the multiple select field")
+    expect(form_page.text).to eq("You entered 'Entered Text', you selected 'C' from the single select field, you selected 'A,C' from the multiple select field, and you did not check the checkbox.")
+  end
+
+  it 'fills in a checkbox properly' do
+    form_page = SimpleFormPage.new
+
+    form_page.visit
+    form_page.fill_in_form(multipleselection: ['A'], checkbox: true)
+    form_page.submit
+    expect(form_page.text).to include("you checked the checkbox.")
   end
 end
