@@ -93,7 +93,7 @@ module Gamera
       def fill_in_form(fields)
         fields.each do |field, value|
           f = send("#{field}_field")
-          f.set(value.to_s) || Array(value).each { |val| f.select(val) }
+          f.set(value) || Array(value).each { |val| f.select(val) }
         end
       end
 
