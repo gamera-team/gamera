@@ -199,7 +199,7 @@ module Gamera
     # @param elements [String] duck types
     # @return [String] of elements joined by single "/" characters.
     def path_join(*elements)
-      "/#{elements.join('/')}".gsub(%r(//+}), '/')
+      "/#{elements.join('/')}".gsub(%r(//+), '/')
     end
   end
 end
