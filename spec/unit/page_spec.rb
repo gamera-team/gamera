@@ -76,4 +76,10 @@ describe 'Page' do
 
     expect(hit_counter_page).to have_text 'You have visited this page 3 times' # Two refreshes means three visits total
   end
+
+  it 'joins a URL and removes extra slashes' do
+    home_page = HomePage.new
+    new_url = home_page.path_join('/index/', '/page/')
+    new_url.should eq('/index/page/')
+  end
 end
