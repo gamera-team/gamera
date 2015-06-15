@@ -6,6 +6,8 @@
 gamera lets you control and interact with web pages directly from your Ruby
 code. Essentially, you can wrap any web page with a Ruby API.
 
+_Note:_ We're a very young project and  currently subject to frequent changes as we sort everything out. Any help is welcome!
+
 ## Table of Contents
 
 - [Features](#features)
