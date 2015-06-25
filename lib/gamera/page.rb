@@ -136,7 +136,7 @@ module Gamera
 
     def initialize(url, url_matcher = nil)
       @url = url
-      @url_matcher = url_matcher
+      @url_matcher = url_matcher || /#{url}/
     end
 
     # Open the page url in the browser specified in your Capybara configuration

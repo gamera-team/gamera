@@ -29,6 +29,6 @@ require 'gamera'
 
 class HomePage < Gamera::Page
   def initialize
-    super('/', %r{\/})
+    super('/')
   end
 end
