@@ -29,6 +29,6 @@ require 'gamera'
 
 class RedirectPage < Gamera::Page
   def initialize
-    super('/redirect', %r{\/redirect$})
+    super('/redirect')
   end
 end
