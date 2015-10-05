@@ -13,6 +13,7 @@ Core Team:
   - Jillian Rosile
   - Glen Aultman-Bettridge
   - David Askey
+  - Bill LeBorgne
 
 Contributors:
   - Jason Rush
