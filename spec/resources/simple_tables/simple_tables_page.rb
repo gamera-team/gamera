@@ -55,11 +55,13 @@ class SimpleTablesPage < Gamera::Page
     def_delegators :fruit_table,
                    :fruit, :fruits,
                    :has_fruit?, :has_fruits?,
+                   :has_no_fruit?, :has_no_fruits?,
                    :edit_fruit, :delete_fruit
 
     def_delegators :vegetable_table,
                    :vegetable, :vegetables,
                    :has_vegetable?, :has_vegetables?,
+                   :has_no_vegetable?, :has_no_vegetables?,
                    :edit_vegetable, :delete_vegetable
   end
 end
