@@ -27,6 +27,8 @@
 
 require 'capybara'
 require_relative 'exceptions'
+require_relative 'modules/visitable'
+require_relative 'utils/path_joiner'
 
 module Gamera
   # This is a base class which implements common methods for page object
@@ -131,75 +133,17 @@ module Gamera
   #   end
   class Page
     include Capybara::DSL
+    include Visitable
+    extend Forwardable
 
     attr_reader :url, :url_matcher
+
+    def_delegator PathJoiner, :path_join, :path_join
 
     def initialize(url, url_matcher = nil)
       @url = url
       @url_matcher = url_matcher || /#{url}/
     end
 
-    # Open the page url in the browser specified in your Capybara configuration
-    #
-    # @param fail_on_redirect [Boolean] Whether to fail if the site redirects to a page that does not match the url_matcher regex
-    # @raise [WrongPageVisited] if the site redirects to URL that doesn't match the url_matcher regex and fail_on_redirect is true
-    def visit(fail_on_redirect = true)
-      super(url)
-      if fail_on_redirect
-        fail WrongPageVisited, "Expected URL '#{url}', got '#{page.current_url}'" unless displayed?
-      end
-    end
-
-    # Check to see if we eventually land on the right page
-    #
-    # @param wait_time_seconds [Integer] How long to wait for the correct page to load
-    # @return [Boolean] true if the url loaded in the browser matches the url_matcher pattern
-    # @raise [NoUrlMatcherForPage] if there's no url_matcher for this page
-    def displayed?(wait_time_seconds = Capybara.default_wait_time)
-      fail Gamera::NoUrlMatcherForPage if url_matcher.nil?
-      start_time = Time.now
-      loop do
-        return true if page.current_url.chomp('/') =~ url_matcher
-        break unless Time.now - start_time <= wait_time_seconds
-        sleep(0.05)
-      end
-      false
-    end
-
-    # A method to wait for slow loading data on a page. Useful, for example,
-    # when waiting on a page that shows the count of records loaded via a slow
-    # web or import.
-    #
-    # @param retries [Integer] Number of times to reload the page before giving up
-    # @param allowed_errors [Array] Array of errors that trigger a refresh, e.g.,  if an ExpectationNotMetError was raised during an acceptance test
-    # @param block [Block] The block to execute after each refresh
-    def with_refreshes(retries, allowed_errors = [RSpec::Expectations::ExpectationNotMetError], &block)
-      retries_left ||= retries
-      visit
-      block.call(retries_left)
-    rescue *allowed_errors => e
-      retries_left -= 1
-      retry if retries_left >= 0
-      raise e
-    end
-
-    # This is a flag for tracking which page object classes don't cover all of
-    # the elements and/or controls on the target web page.
-    #
-    # @return [Boolean] true unless everything's been captured in the page
-    #   object class
-    def sparse?
-      false
-    end
-
-    # This is a utility method to clean up URLs formed by concatenation since we
-    # sometimes ended up with "//" in the middle of URLs which broke the
-    # url_matcher checks.
-    #
-    # @param elements [String] duck types
-    # @return [String] of elements joined by single "/" characters.
-    def path_join(*elements)
-      "/#{elements.join('/')}".gsub(%r(//+), '/')
-    end
   end
 end

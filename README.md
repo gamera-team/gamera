@@ -281,6 +281,10 @@ This could then be used as the parent class for the _RegistrationPage_ in the
 previous example, adding the ability to check the flash message when the user is
 registered.
 
+### Using Gamera's modules directly instead of the Page class
+
+If you are not able to or do not want to inherit directly from `Page`, you can include Gamera's `Visitable` module directly where needed. `Visitable` includes methods to include on pages that are visitable, i.e. have a URL to visit and are then displayed. You may also want to add in the `PathJoiner` class in a manner similar to how it is used in `Gamera::Page`.
+
 ### Example: Creating a _Builder_ subclass to capture a multipage business process
 
 For this example, let's assume we're automating a task management site that
