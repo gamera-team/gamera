@@ -4,7 +4,7 @@ $LOAD_PATH.unshift File.expand_path('lib', __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = 'gamera'
-  s.version     = '0.1.6'
+  s.version     = '0.1.7'
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Eric Dobbs', 'Glen Aultman-Bettridge', 'Jillian Rosile']
   s.email       = ['eric@dobbse.net', 'glenab@koansolutions.net', 'jillian.rosile@gmail.com']
