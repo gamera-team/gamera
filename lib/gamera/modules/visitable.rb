@@ -8,7 +8,7 @@ module Gamera
     #
     # @param fail_on_redirect [Boolean] Whether to fail if the site redirects to a page that does not match the url_matcher regex
     # @raise [WrongPageVisited] if the site redirects to URL that doesn't match the url_matcher regex and fail_on_redirect is true
-    def visit(fail_on_redirect = true)
+    def visit(fail_on_redirect: true)
       super(url)
       if fail_on_redirect
         fail Gamera::WrongPageVisited, "Expected URL '#{url}', got '#{page.current_url}'" unless displayed?

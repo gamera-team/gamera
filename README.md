@@ -376,7 +376,7 @@ pry> simple_site
 ### Example: Page Redirection via Pry
 
 ```bash
-pry> redirect_page.visit(false) # => should redirect to home page; "false" tells it not to validate that the page landed on is the page requested
+pry> redirect_page.visit(fail_on_redirect: false) # => should redirect to home page; "false" tells it not to validate that the page landed on is the page requested
 pry> redirect_page.displayed? # => false
 pry> home_page.displayed? # => true
 ```
