@@ -20,7 +20,7 @@ module Gamera
     # @param wait_time_seconds [Integer] How long to wait for the correct page to load
     # @return [Boolean] true if the url loaded in the browser matches the url_matcher pattern
     # @raise [NoUrlMatcherForPage] if there's no url_matcher for this page
-    def displayed?(wait_time_seconds = Capybara.default_wait_time)
+    def displayed?(wait_time_seconds = Capybara.default_max_wait_time)
       fail Gamera::NoUrlMatcherForPage if url_matcher.nil?
       start_time = Time.now
       loop do
