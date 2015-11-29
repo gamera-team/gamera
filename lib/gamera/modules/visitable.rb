@@ -4,6 +4,13 @@ module Gamera
 
     include Capybara::DSL
 
+    # Define CAPYBARA_DEFAULT_MAX_WAIT_TIME differently, depending on the version of Capybara.
+    CAPYBARA_DEFAULT_MAX_WAIT_TIME = if Gem::Version.new(Capybara::VERSION) >= Gem::Version.new('2.5.0')
+      Capybara.default_max_wait_time
+    else
+      Capybara.default_wait_time
+    end
+
     # Open the page url in the browser specified in your Capybara configuration
     #
     # @param fail_on_redirect [Boolean] Whether to fail if the site redirects to a page that does not match the url_matcher regex
@@ -20,7 +27,7 @@ module Gamera
     # @param wait_time_seconds [Integer] How long to wait for the correct page to load
     # @return [Boolean] true if the url loaded in the browser matches the url_matcher pattern
     # @raise [NoUrlMatcherForPage] if there's no url_matcher for this page
-    def displayed?(wait_time_seconds = Capybara.default_max_wait_time)
+    def displayed?(wait_time_seconds = CAPYBARA_DEFAULT_MAX_WAIT_TIME)
       fail Gamera::NoUrlMatcherForPage if url_matcher.nil?
       start_time = Time.now
       loop do
