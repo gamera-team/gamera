@@ -142,11 +142,11 @@ module Gamera
         page.has_selector?(row_css, text: name)
       end
 
-     # Checks for the absence of a row with the given name
-     #
-     # @param name [String] The name to look for in the table's specified name column.
-     # @return [Boolean] False if a row with the specified name is found, true
-     # otherwise
+      # Checks for the absence of a row with the given name
+      #
+      # @param name [String] The name to look for in the table's specified name column.
+      # @return [Boolean] False if a row with the specified name is found, true
+      # otherwise
       def has_no_row?(name)
         page.has_no_selector?(row_css, text: name)
       end
@@ -202,15 +202,15 @@ module Gamera
         edit_row_name = "edit_#{row_name}".to_sym
 
         self.class.instance_eval do
-          alias_method rows_name, :rows
-          alias_method has_row_name, :has_row?
-          alias_method has_no_row_name, :has_no_row?
-          alias_method has_rows_name, :has_rows?
-          alias_method has_no_rows_name, :has_no_rows?
-          alias_method delete_all_rows_name, :delete_all_rows
-          alias_method delete_row_name, :delete_row
-          alias_method edit_row_name, :edit_row
-          alias_method row_name, :row_named
+          alias rows_name rows
+          alias has_row_name has_row?
+          alias has_no_row_name has_no_row?
+          alias has_rows_name has_rows?
+          alias has_no_rows_name has_no_rows?
+          alias delete_all_rows_name delete_all_rows
+          alias delete_row_name delete_row
+          alias edit_row_name edit_row
+          alias row_name row_named
         end
       end
     end
