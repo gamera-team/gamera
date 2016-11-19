@@ -70,4 +70,20 @@ describe 'SimpleTablesPage' do
     tables_page.visit
     expect(tables_page.fruit(/Grape.+/).color).to eq('Pink')
   end
+
+  it 'identifies whether a row exists' do
+    tables_page.visit
+    expect(tables_page).to have_fruit('Grape')
+  end
+
+  it 'identifies whether a row does not exist' do
+    tables_page.visit
+    expect(tables_page).to have_no_fruit('Pineapple')
+  end
+
+  it 'identifies when a table has no rows' do
+    tables_page.visit
+    expect(tables_page).not_to have_no_fruits
+  end
+
 end

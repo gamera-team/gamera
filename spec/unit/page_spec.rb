@@ -53,7 +53,7 @@ describe 'Page' do
 
   it 'ignores a redirect if told to' do
     redirect_page = RedirectPage.new
-    expect { redirect_page.visit(false) }.not_to raise_error
+    expect { redirect_page.visit(fail_on_redirect: false) }.not_to raise_error
   end
 
   it 'refreshes until a condition is met and then stops refreshing' do

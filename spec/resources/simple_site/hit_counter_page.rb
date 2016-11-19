@@ -29,6 +29,6 @@ require 'gamera'
 
 class HitCounterPage < Gamera::Page
   def initialize
-    super('/hit_counter', %r{\/hit_counter})
+    super('/hit_counter')
   end
 end
