@@ -107,7 +107,7 @@ module Gamera
     #    b.build
     #    #=> User(name: "Bob", bday: #<Date: Sat, 09 Dec 1989>)
     def self.create_with(spec, &block)
-      struct = Struct.new(*(spec.keys)) do
+      struct = Struct.new(*spec.keys) do
         def initialize(options = {})
           super
           options.each { |opt, value| self[opt] = value }
@@ -230,7 +230,7 @@ module Gamera
     #
     # @note Don't call this method directly, use +#result+ instead.
     def build
-      fail NotImplementedError
+      raise NotImplementedError
     end
 
     def_delegator :self, :build, :call

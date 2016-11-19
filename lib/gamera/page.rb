@@ -146,7 +146,7 @@ module Gamera
     def visit(fail_on_redirect = true)
       super(url)
       if fail_on_redirect
-        fail WrongPageVisited, "Expected URL '#{url}', got '#{page.current_url}'" unless displayed?
+        raise WrongPageVisited, "Expected URL '#{url}', got '#{page.current_url}'" unless displayed?
       end
     end
 
@@ -156,7 +156,7 @@ module Gamera
     # @return [Boolean] true if the url loaded in the browser matches the url_matcher pattern
     # @raise [NoUrlMatcherForPage] if there's no url_matcher for this page
     def displayed?(wait_time_seconds = Capybara.default_wait_time)
-      fail Gamera::NoUrlMatcherForPage if url_matcher.nil?
+      raise Gamera::NoUrlMatcherForPage if url_matcher.nil?
       start_time = Time.now
       loop do
         return true if page.current_url.chomp('/') =~ url_matcher
@@ -173,10 +173,10 @@ module Gamera
     # @param retries [Integer] Number of times to reload the page before giving up
     # @param allowed_errors [Array] Array of errors that trigger a refresh, e.g.,  if an ExpectationNotMetError was raised during an acceptance test
     # @param block [Block] The block to execute after each refresh
-    def with_refreshes(retries, allowed_errors = [RSpec::Expectations::ExpectationNotMetError], &block)
+    def with_refreshes(retries, allowed_errors = [RSpec::Expectations::ExpectationNotMetError])
       retries_left ||= retries
       visit
-      block.call(retries_left)
+      yield(retries_left)
     rescue *allowed_errors => e
       retries_left -= 1
       retry if retries_left >= 0
@@ -199,7 +199,7 @@ module Gamera
     # @param elements [String] duck types
     # @return [String] of elements joined by single "/" characters.
     def path_join(*elements)
-      "/#{elements.join('/')}".gsub(%r(//+), '/')
+      "/#{elements.join('/')}".gsub(%r{//+}, '/')
     end
   end
 end

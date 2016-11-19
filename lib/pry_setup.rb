@@ -31,4 +31,3 @@ end
 def simple_form
   set_app SimpleForm.new
 end
-

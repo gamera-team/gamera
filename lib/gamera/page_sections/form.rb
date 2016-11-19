@@ -105,7 +105,7 @@ module Gamera
       def define_field_methods
         if fields.is_a?(Array)
           fields.each do |field_label|
-            field = field_label.downcase.gsub(' ', '_').gsub(/\W/, '').to_sym
+            field = field_label.downcase.tr(' ', '_').gsub(/\W/, '').to_sym
             field_method_name = define_field_name(field)
             define_field_method(field_method_name, field_label)
           end

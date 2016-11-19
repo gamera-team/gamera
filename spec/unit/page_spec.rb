@@ -70,7 +70,7 @@ describe 'Page' do
   it 'fails after the right number of visits if the condition is not ever met' do
     expect do
       hit_counter_page.with_refreshes(2, TextNotFoundError) do
-        fail TextNotFoundError unless hit_counter_page.has_text? 'This text does not ever appear'
+        raise TextNotFoundError unless hit_counter_page.has_text? 'This text does not ever appear'
       end
     end.to raise_exception(TextNotFoundError)
 

@@ -50,6 +50,6 @@ describe 'SimpleFormPage' do
     form_page.visit
     form_page.fill_in_form(multipleselection: ['A'], checkbox: true)
     form_page.submit
-    expect(form_page.text).to include("you checked the checkbox.")
+    expect(form_page.text).to include('you checked the checkbox.')
   end
 end

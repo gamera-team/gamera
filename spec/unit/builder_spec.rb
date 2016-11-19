@@ -72,8 +72,8 @@ describe Gamera::Builder do
       context 'fully specified builder object' do
         subject(:builder) do
           builder_class.new
-            .with_name('Qatest')
-            .with_bday(birthday)
+                       .with_name('Qatest')
+                       .with_bday(birthday)
         end
 
         describe 'built object' do
@@ -87,7 +87,7 @@ describe Gamera::Builder do
       context 'partially specified builder object' do
         subject(:builder) do
           builder_class.new
-            .with_name('Qatest')
+                       .with_name('Qatest')
         end
 
         describe 'built object' do
@@ -109,7 +109,7 @@ describe Gamera::Builder do
 
         subject(:builder) do
           builder_class.new
-            .with_name('Qatest')
+                       .with_name('Qatest')
         end
 
         describe 'built object' do
@@ -160,8 +160,8 @@ describe Gamera::Builder do
     end
 
     ub = AlternateUserBuilder.new
-         .with_name('Qatest')
-         .born_on(birthday)
+                             .with_name('Qatest')
+                             .born_on(birthday)
     u = ub.build
     expect(u.name).to eq('Qatest')
     expect(u.bday).to eq(birthday)

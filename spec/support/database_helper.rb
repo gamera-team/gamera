@@ -33,7 +33,7 @@ module DatabaseHelper
     database: 'file:without-environment-hash?mode=memory&cache=shared',
     username: 'root',
     password: nil
-  }
+  }.freeze
 
   WITH_ENVIRONMENT_HASH_CONFIG = {
     test: {
@@ -42,7 +42,7 @@ module DatabaseHelper
       username: 'root',
       password: nil
     }
-  }
+  }.freeze
 
   INVALID_HASH_CONFIG = {
     anything_but_test: {
@@ -51,7 +51,7 @@ module DatabaseHelper
       username: 'root',
       password: nil
     }
-  }
+  }.freeze
 
   def initialize_all_dbs
     initialize_without_environment_database_yml_db

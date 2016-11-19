@@ -40,8 +40,7 @@ class SimpleTablesPage < Gamera::Page
 
     @fruit_table = Gamera::PageSections::Table.new(headers: fruit_headers,
                                                    row_name: :fruit,
-                                                   row_css: 'table.fruits tr + tr'
-    )
+                                                   row_css: 'table.fruits tr + tr')
 
     @vegetable_table = Gamera::PageSections::Table.new(headers: vegetable_headers,
                                                        row_name: :vegetable,
@@ -49,8 +48,7 @@ class SimpleTablesPage < Gamera::Page
                                                        name_column: 'Vegetable',
                                                        row_class: VegetableTableRow,
                                                        row_editor: VegetableRowEditor.new,
-                                                       row_deleter: VegetableRowDeleter.new
-    )
+                                                       row_deleter: VegetableRowDeleter.new)
 
     def_delegators :fruit_table,
                    :fruit, :fruits,
