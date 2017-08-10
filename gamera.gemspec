@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.cert_chain  = ['certs/glena-b.pem']
   s.signing_key = File.expand_path('~/.ssh/gem-private_key.pem') if $PROGRAM_NAME.end_with?('gem')
 
-  s.add_dependency 'sinatra', '~> 2.0'
+  s.add_dependency 'sinatra', '~> 2.0.0'
   s.add_dependency 'selenium-webdriver', '~> 3.4', '>= 3.4.4'
   s.add_dependency 'sqlite3', '~> 1.3', '>= 1.3.13'
   s.add_dependency 'capybara', '~> 2.15', '>= 2.15.1'
