@@ -27,7 +27,7 @@ _Note:_ We're a very young project and  currently subject to frequent changes as
 
 
 The brilliant Martin Fowler describes the
-[PageObject](http://martinfowler.com/bliki/PageObject.html) pattern in detail.
+[PageObject pattern in detail.](http://martinfowler.com/bliki/PageObject.html)
 Here's is a list of the essential features of the pattern.
 
   - A PageObject creates an application-level API for a web page or section of a
@@ -349,7 +349,7 @@ of them to test gamera. You can play with some of the spec pages and apps in
 pry, using the following
 
 ```bash
-cd ~/workspace/talos/lib
+cd gamera//lib
 pry -r ./pry_setup.rb
 ```
 
