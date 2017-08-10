@@ -1,3 +1,4 @@
+require 'capybara/dsl'
 require_relative 'gamera/builder'
 require_relative 'gamera/builders/sequel_fixture_builder'
 require_relative 'gamera/exceptions'
