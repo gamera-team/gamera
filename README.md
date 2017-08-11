@@ -2,6 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/gamera-team/gamera.png)](http://travis-ci.org/gamera-team/gamera)
 [![Dependency Status](https://gemnasium.com/gamera-team/gamera.png)](https://gemnasium.com/gamera-team/gamera)
+[![Ebert](https://ebertapp.io/github/gamera-team/gamera.svg)](https://ebertapp.io/github/gamera-team/gamera)
 
 gamera lets you control and interact with web pages directly from your Ruby
 code. Essentially, you can wrap any web page with a Ruby API.
