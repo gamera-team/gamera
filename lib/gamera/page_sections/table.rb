@@ -97,7 +97,7 @@ module Gamera
                      row_name:,
                      plural_row_name: nil,
                      name_column: 'Name',
-                     row_css: 'tr + tr', # all tr's except the first one (which is almost always a table header)
+                     row_css: 'tr + tr', # all <tr>s except the first one (which is almost always a table header)
                      row_class: TableRow,
                      row_editor: RowEditor.new,
                      row_deleter: RowDeleter.new)
@@ -202,15 +202,15 @@ module Gamera
         edit_row_name = "edit_#{row_name}".to_sym
 
         self.class.instance_eval do
-          alias rows_name rows
-          alias has_row_name has_row?
-          alias has_no_row_name has_no_row?
-          alias has_rows_name has_rows?
-          alias has_no_rows_name has_no_rows?
-          alias delete_all_rows_name delete_all_rows
-          alias delete_row_name delete_row
-          alias edit_row_name edit_row
-          alias row_name row_named
+          alias_method rows_name, :rows
+          alias_method has_row_name, :has_row?
+          alias_method has_no_row_name, :has_no_row?
+          alias_method has_rows_name, :has_rows?
+          alias_method has_no_rows_name, :has_no_rows?
+          alias_method delete_all_rows_name, :delete_all_rows
+          alias_method delete_row_name, :delete_row
+          alias_method edit_row_name, :edit_row
+          alias_method row_name, :row_named
         end
       end
     end
