@@ -60,9 +60,9 @@ module Gamera
     #
     #   Gamera::Builders::SequelFixtureBuilder.new.build
     class SequelFixtureBuilder < Gamera::Builder.with_options(:database_config, :fixture_directory, :database_cleaner_options)
-      DEFAULT_DATABASE_CONFIG        = './config/database.yml'
-      DEFAULT_SPEC_FIXTURE_DIRECTORY = './spec/fixtures'
-      DEFAULT_TEST_FIXTURE_DIRECTORY = './test/fixtures'
+      DEFAULT_DATABASE_CONFIG        = './config/database.yml'.freeze
+      DEFAULT_SPEC_FIXTURE_DIRECTORY = './spec/fixtures'.freeze
+      DEFAULT_TEST_FIXTURE_DIRECTORY = './test/fixtures'.freeze
 
       # Truncates the database and imports the fixtures.
       # Returns a +Sequel::Fixture+ object, containing
@@ -99,7 +99,7 @@ module Gamera
         @path_to_fixtures ||= begin
           if fixture_directory && !fixture_directory.empty?
             unless File.exist?(fixture_directory)
-              fail DatabaseNotConfigured, "Invalid fixture directory #{fixture_directory}"
+              raise DatabaseNotConfigured, "Invalid fixture directory #{fixture_directory}"
             end
             fixture_directory
           elsif File.exist?(DEFAULT_SPEC_FIXTURE_DIRECTORY)
@@ -107,7 +107,7 @@ module Gamera
           elsif File.exist?(DEFAULT_TEST_FIXTURE_DIRECTORY)
             DEFAULT_TEST_FIXTURE_DIRECTORY
           else
-            fail DatabaseNotConfigured, 'Unable to find fixtures to load'
+            raise DatabaseNotConfigured, 'Unable to find fixtures to load'
           end
         end
       end
@@ -124,7 +124,7 @@ module Gamera
           if config
             Sequel.connect(config)
           else
-            fail DatabaseNotConfigured, 'Unable to connect to database'
+            raise DatabaseNotConfigured, 'Unable to connect to database'
           end
         end
       end
@@ -151,7 +151,11 @@ module Gamera
       def self.database_config_from_file(config = nil)
         return nil unless config.is_a?(String) && File.exist?(config)
 
-        db_config = YAML.load_file(config) rescue nil
+        db_config = begin
+                      YAML.load_file(config)
+                    rescue
+                      nil
+                    end
         return nil unless db_config
 
         database_config_from_hash(db_config)
@@ -209,11 +213,11 @@ module Gamera
       # => username
       def self.verify_database_config(db_config)
         db_config ||= {}
-        missing_fields = [:adapter, :database, :username].reject do |field|
+        missing_fields = %i[adapter database username].reject do |field|
           db_config.key?(field) || db_config.key?(field.to_s)
         end
         unless missing_fields.empty?
-          fail DatabaseNotConfigured, "Unable to connect to database: Missing config for #{missing_fields.join(', ')}"
+          raise DatabaseNotConfigured, "Unable to connect to database: Missing config for #{missing_fields.join(', ')}"
         end
       end
 

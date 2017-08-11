@@ -77,7 +77,7 @@ module Gamera
     end
 
     def stop_proxying
-      start_proxying(-> (*args) { super(*args) }, @top_class)
+      start_proxying(->(*args) { super(*args) }, @top_class)
     end
   end
 end

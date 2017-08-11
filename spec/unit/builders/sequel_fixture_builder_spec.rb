@@ -174,7 +174,7 @@ module Gamera
       context 'only cleaning certain tables with the database cleaner' do
         let(:config) { DatabaseHelper::WITHOUT_ENVIRONMENT_HASH_CONFIG }
         let(:fixtures) { fixtures_path('without_environment_hash_fixtures') }
-        let(:opts) { { tables: [:houses, :residents] } }
+        let(:opts) { { tables: %i[houses residents] } }
 
         let(:db) { subject.db }
         let!(:houses) { db[:houses] }

@@ -6,9 +6,9 @@ module Gamera
 
     # Define CAPYBARA_DEFAULT_MAX_WAIT_TIME differently, depending on the version of Capybara.
     CAPYBARA_DEFAULT_MAX_WAIT_TIME = if Gem::Version.new(Capybara::VERSION) >= Gem::Version.new('2.5.0')
-      Capybara.default_max_wait_time
-    else
-      Capybara.default_wait_time
+                                       Capybara.default_max_wait_time
+                                     else
+                                       Capybara.default_wait_time
     end
 
     # Open the page url in the browser specified in your Capybara configuration
@@ -18,7 +18,7 @@ module Gamera
     def visit(fail_on_redirect: true)
       super(url)
       if fail_on_redirect
-        fail Gamera::WrongPageVisited, "Expected URL '#{url}', got '#{page.current_url}'" unless displayed?
+        raise Gamera::WrongPageVisited, "Expected URL '#{url}', got '#{page.current_url}'" unless displayed?
       end
     end
 
@@ -28,7 +28,7 @@ module Gamera
     # @return [Boolean] true if the url loaded in the browser matches the url_matcher pattern
     # @raise [NoUrlMatcherForPage] if there's no url_matcher for this page
     def displayed?(wait_time_seconds = CAPYBARA_DEFAULT_MAX_WAIT_TIME)
-      fail Gamera::NoUrlMatcherForPage if url_matcher.nil?
+      raise Gamera::NoUrlMatcherForPage if url_matcher.nil?
       start_time = Time.now
       loop do
         return true if page.current_url.chomp('/') =~ url_matcher
@@ -45,10 +45,10 @@ module Gamera
     # @param retries [Integer] Number of times to reload the page before giving up
     # @param allowed_errors [Array] Array of errors that trigger a refresh, e.g.,  if an ExpectationNotMetError was raised during an acceptance test
     # @param block [Block] The block to execute after each refresh
-    def with_refreshes(retries, allowed_errors = [RSpec::Expectations::ExpectationNotMetError], &block)
+    def with_refreshes(retries, allowed_errors = [RSpec::Expectations::ExpectationNotMetError])
       retries_left ||= retries
       visit
-      block.call(retries_left)
+      yield(retries_left)
     rescue *allowed_errors => e
       retries_left -= 1
       retry if retries_left >= 0
@@ -57,7 +57,7 @@ module Gamera
 
     # A reminder to implement a url method when using this module.
     def url
-      fail NotImplementedError, 'To use the Visitable module, you must implement a url method'
+      raise NotImplementedError, 'To use the Visitable module, you must implement a url method'
     end
   end
 end

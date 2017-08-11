@@ -44,7 +44,7 @@ describe 'Page' do
 
   it 'catches a redirect' do
     redirect_page = RedirectPage.new
-    expect { redirect_page.visit }.to raise_error
+    expect { redirect_page.visit }.to raise_error Gamera::WrongPageVisited
     expect(redirect_page).not_to be_displayed
 
     home_page = HomePage.new
@@ -70,7 +70,7 @@ describe 'Page' do
   it 'fails after the right number of visits if the condition is not ever met' do
     expect do
       hit_counter_page.with_refreshes(2, TextNotFoundError) do
-        fail TextNotFoundError unless hit_counter_page.has_text? 'This text does not ever appear'
+        raise TextNotFoundError unless hit_counter_page.has_text? 'This text does not ever appear'
       end
     end.to raise_exception(TextNotFoundError)
 
@@ -80,6 +80,6 @@ describe 'Page' do
   it 'joins a URL and removes extra slashes' do
     home_page = HomePage.new
     new_url = home_page.path_join('/index/', '/page/')
-    new_url.should eq('/index/page/')
+    expect(new_url).to eq('/index/page/')
   end
 end

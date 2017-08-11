@@ -144,6 +144,5 @@ module Gamera
       @url = url
       @url_matcher = url_matcher || /#{url}/
     end
-
   end
 end

@@ -85,7 +85,7 @@ module Gamera
     class Table < DelegateClass(Capybara::Node::Element)
       include Capybara::DSL
 
-     # @param headers [Array] An array of the strings from the tables header row
+      # @param headers [Array] An array of the strings from the tables header row
       # @param row_name [String] A label that can be used to create more readable versions of general row methods
       # @param plural_row_name [String] Plural form of [row_name]
       # @param name_column [String] The column heading for the column which contains each row's name
@@ -97,11 +97,10 @@ module Gamera
                      row_name:,
                      plural_row_name: nil,
                      name_column: 'Name',
-                     row_css: 'tr + tr', # all tr's except the first one (which is almost always a table header)
+                     row_css: 'tr + tr', # all <tr>s except the first one (which is almost always a table header)
                      row_class: TableRow,
                      row_editor: RowEditor.new,
-                     row_deleter: RowDeleter.new
-                    )
+                     row_deleter: RowDeleter.new)
         @row_css = row_css
         @headers = headers
         @row_class = row_class
@@ -109,7 +108,7 @@ module Gamera
         @row_deleter = row_deleter
         @row_name = row_name
         @plural_row_name = plural_row_name
-        @name_column = name_column.downcase.gsub(' ', '_').gsub(/[^a-z0-9_]+/, '')
+        @name_column = name_column.downcase.tr(' ', '_').gsub(/[^a-z0-9_]+/, '')
 
         add_custom_function_names
       end
@@ -143,11 +142,11 @@ module Gamera
         page.has_selector?(row_css, text: name)
       end
 
-     # Checks for the absence of a row with the given name
-     #
-     # @param name [String] The name to look for in the table's specified name column.
-     # @return [Boolean] False if a row with the specified name is found, true
-     # otherwise
+      # Checks for the absence of a row with the given name
+      #
+      # @param name [String] The name to look for in the table's specified name column.
+      # @return [Boolean] False if a row with the specified name is found, true
+      # otherwise
       def has_no_row?(name)
         page.has_no_selector?(row_css, text: name)
       end
@@ -188,7 +187,7 @@ module Gamera
       private
 
       attr_reader :headers, :row_css, :row_name, :name_column, :row_class,
-        :row_editor, :row_deleter
+                  :row_editor, :row_deleter
 
       def add_custom_function_names
         row_name = @row_name # The attr_reader wasn't working here
@@ -214,8 +213,6 @@ module Gamera
           alias_method row_name, :row_named
         end
       end
-
-
     end
 
     # Default class used to represent a row in a table
@@ -226,7 +223,7 @@ module Gamera
         super(row_css)
 
         headers.each_with_index do |header, i|
-          cell_name = header.downcase.gsub(' ', '_').gsub(/[^a-z0-9_]+/, '')
+          cell_name = header.downcase.tr(' ', '_').gsub(/[^a-z0-9_]+/, '')
           self.class.send(:define_method, cell_name) do
             find("td:nth-child(#{i + 1})").text
           end

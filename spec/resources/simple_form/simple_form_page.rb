@@ -35,7 +35,7 @@ class SimpleFormPage < Gamera::Page
   def initialize
     super('/', %r{\/})
 
-    fields = %w(Text Selection MultipleSelection Checkbox)
+    fields = %w[Text Selection MultipleSelection Checkbox]
 
     @form = Gamera::PageSections::Form.new(fields)
 

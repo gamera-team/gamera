@@ -85,5 +85,4 @@ describe 'SimpleTablesPage' do
     tables_page.visit
     expect(tables_page).not_to have_no_fruits
   end
-
 end
