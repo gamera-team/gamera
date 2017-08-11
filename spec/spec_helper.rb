@@ -35,7 +35,10 @@ require_relative '../spec/support/database_helper'
 
 ENV['RACK_ENV'] = 'test'
 
-Capybara.default_driver = :selenium
+# Capybara.default_driver = :selenium
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :firefox)
+end
 Capybara.javascript_driver = :selenium
 
 RSpec.configure do |config|

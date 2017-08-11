@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'sinatra', '~> 2.0.0'
   s.add_dependency 'selenium-webdriver', '~> 3.4', '>= 3.4.4'
+  s.add_dependency 'geckodriver-helper', '~> 0.0.3'
   s.add_dependency 'sqlite3', '~> 1.3', '>= 1.3.13'
   s.add_dependency 'capybara', '~> 2.15', '>= 2.15.1'
   s.add_dependency 'capybara-screenshot', '~> 1.0', '>= 1.0.17'
