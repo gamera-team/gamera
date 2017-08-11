@@ -93,7 +93,7 @@ module Gamera
       def fill_in_form(fields)
         fields.each do |field, value|
           f = send("#{field}_field")
-          if f.tag_name == "select"
+          if f.tag_name == 'select'
             Array(value).each { |val| f.select(val) }
           else
             f.set(value)

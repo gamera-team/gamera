@@ -35,8 +35,8 @@ class SimpleTablesPage < Gamera::Page
   def initialize
     super('/', %r{\/})
 
-    fruit_headers = %w(Name Color Edit Delete)
-    vegetable_headers = %w(Select Vegetable Edit Delete)
+    fruit_headers = %w[Name Color Edit Delete]
+    vegetable_headers = %w[Select Vegetable Edit Delete]
 
     @fruit_table = Gamera::PageSections::Table.new(headers: fruit_headers,
                                                    row_name: :fruit,

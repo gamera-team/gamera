@@ -31,8 +31,8 @@ module Gamera
   module Utils
     describe DatabaseCleaner do
       let(:connection) { double('Sequel DB', tables: all_tables) }
-      let(:specified_tables) { [:users, :roles] }
-      let(:unspecified_tables) { [:foos, :bars] }
+      let(:specified_tables) { %i[users roles] }
+      let(:unspecified_tables) { %i[foos bars] }
       let(:all_tables) { specified_tables + unspecified_tables }
 
       shared_examples_for 'cleaner' do

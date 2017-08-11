@@ -213,7 +213,7 @@ module Gamera
       # => username
       def self.verify_database_config(db_config)
         db_config ||= {}
-        missing_fields = [:adapter, :database, :username].reject do |field|
+        missing_fields = %i[adapter database username].reject do |field|
           db_config.key?(field) || db_config.key?(field.to_s)
         end
         unless missing_fields.empty?
