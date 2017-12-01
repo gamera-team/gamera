@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = 'PageObject pattern implementation based on Capybara'
   s.description = 'Provides a framework which lets you wrap any web page with a Ruby API.'
 
-  s.required_ruby_version = '~> 2.1', '>= 2.1.0'
+  s.required_ruby_version = '>= 2.1.0'
 
   s.files            = `git ls-files -- lib/*`.split("\n")
 
