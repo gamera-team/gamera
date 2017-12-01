@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.test_files       = `git ls-files -- {spec}/*`.split("\n")
   s.require_path     = 'lib'
 
-  s.cert_chain  = ['certs/glena-b.pem']
+  s.cert_chain  = ['certs/dobbs.pem']
   s.signing_key = File.expand_path('~/.ssh/gem-private_key.pem') if $PROGRAM_NAME.end_with?('gem')
 
   s.add_dependency 'selenium-webdriver', '~> 3.4', '>= 3.4.4'
